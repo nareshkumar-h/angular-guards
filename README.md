@@ -9,6 +9,8 @@ ng g guard auth
 ##### AuthGuard - Business Logic
 * If user is not loggedin, show alert message 'Please login' and then redirect to login page.
 * If user is loggedin, allow the user to access the component page
+* If the guard returns true, it will **ALLOW** to access the page.
+* If the guard returns false, it will **NOT ALLOW** to access the page.
 
 ```ts
 import { CanActivateFn } from '@angular/router';
