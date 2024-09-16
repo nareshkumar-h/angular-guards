@@ -1,27 +1,40 @@
-# AmazonRoutingApp
+# Guards
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.0.
+##### Create Guards
+```ts
+ng g guard auth
+```
+* Choose (*)canActivate [ Spacebar + enter to select  )
 
-## Development server
+##### AuthGuard - Business Logic
+* If user is not loggedin, show alert message 'Please login' and then redirect to login page.
+* If user is loggedin, allow the user to access the component page
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+```ts
+import { CanActivateFn } from '@angular/router';
 
-## Code scaffolding
+export const authGuard: CanActivateFn = (route, state) => {
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+  console.log('AuthGuard called');
+  const user = localStorage.getItem('IS_LOGGED_IN');
+  console.log('User loggedin ?', user);
+  if (!user) {
+    console.log("User is not logged in.");
+    alert('User must login to access this page');
+    window.location.href = "/login";
+    return false;
+  } else {
+    console.log('User is loggedin');
+    return true;
+  }
+  //return true;// true means allow to proceed, false means block
+};
 
-## Build
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+##### Task : How to protect the private pages ?
+* We will add canActivate 
+```ts
+{ path: 'products/add', component: ProductAddComponent, canActivate: [authGuard] },
+```
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
